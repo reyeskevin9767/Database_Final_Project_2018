@@ -1,0 +1,426 @@
+/*Create datebase comicbook stores*/
+drop database if exists cbstoresDB;
+create database cbstoresDB; 
+use cbstoresDB;
+
+/*create comicbooks table*/
+drop table if exists comicbooks;
+create table comicbooks(
+   comicBookID smallint(5) UNSIGNED NOT NULL AUTO_increment,
+   comicName   CHAR(50) NOT NULL Default '',
+   comicIssue  smallint(4) UNSIGNED NULL,
+   comicSale      DATE NULL,
+   comicPrice  decimal(5,2) NOT NULL Default 000.00,
+   comicPublisher enum('Other','DC','Marvel','Image','Dark Horse') NULL,
+   comicFormat enum('Other','Comic','Graphic Novel','Mini-Series','Digest', 'Trade Paperback') NULL,
+   comicGenre  set('Other','Action','Adventure','Mystery','Science-Fiction','Superhero','Humor','Fantasy','Video Game','Crime','Horror') NULL,
+   PRIMARY KEY(comicBookID)
+   );
+
+/*insert values into comicbooks values*/
+insert into comicbooks values
+   (1,'Batman Beyond',19,'2018-04-25',3.99,'DC','Comic','Action,Superhero'),
+   (2,'Batgirl',22,'2018-04-25',3.99,'DC','Comic','Action,Superhero,Crime,Mystery'),
+   (3,'Batman',46,'2018-05-02',2.99,'DC','Comic','Mystery,Crime,Action,Superhero'),
+   (4,'Batman and The Signal',NULL,'2018-05-23',16.99,'DC','Graphic Novel','Mystery,Crime,Action,Superhero'),
+   (5,'Superman Reborn',NULL,'2018-05-16',16.99,'DC','Graphic Novel','Action,Superhero'),
+   (6,'Harley Quinn Vol.5: Vote Harley',NULL,'2018-05-02',16.99,'DC','Graphic Novel','Action,Superhero,Humor,Crime'),
+   (7,'Raven, Daughter of Darkness',5,'2018-05-30',3.99,'DC','Comic','Action,Adventure,Superhero,Fantasy'),
+   (8,'Scooby-Doo, Where Are You?',92,'2018-04-11',2.99,'DC','Comic','Action,Adventure,Humor,Mystery'), 
+   (9,'The Hellblazer',21,'2018-04-25',3.99,'DC','Comic','Action,Superhero,Horror,Fantasy'),
+   (10,'Suicide Squad',NULL,'2018-04-11',14.99,'DC','Graphic Novel','Superhero,Crime'),
+   (11,'Marvel Rising',0,'2018-04-25',0.00,'Marvel','Comic','Humor,Superhero'),
+   (12,'Exiles',2,'2018-04-25',3.99,'Marvel','Comic','Action,Superhero,Fantasy,Adventure'),
+   (13,'Amazing Spider-Man: Renew Your Vows',18,'2018-04-18',3.99,'Marvel','Comic','Action,Superhero'),
+   (14,'All-New Wolverine',33,'2018-04-04',3.99,'Marvel','Comic','Action,Superhero'),
+   (15,'Moon Girl and Devil Dinosaur',30,'2018-04-25',3.99,'Marvel','Comic','Action,Superhero,Humor'),
+   (16,'DareDevil',603,'2018-05-30',3.99,'Marvel','Comic','Action,Superhero,Fantasy,Crime'),
+   (17,'The Amazing Spider-Man',800,'2018-05-30',9.99,'Marvel','Comic','Action,Superhero'),
+   (18,'Poe Dameron',27,'2018-05-16',3.99,'Marvel','Comic','Action,Science-Fiction,Adventure'),
+   (19,'Avengers Assemble: Game on Digest',NULL,'2018-05-02',9.99,'Marvel','Digest','Action,Science-Fiction,Adventure,Superhero'),
+   (20,'Spider-Gwen Vol.5: Gwenom',Null,'2018-04-18',17.99,'Marvel','Trade Paperback','Action,Superhero'),
+   (21,'Kill or Be Killed',18,'2018-04-25',3.99,'Image','Comic','Crime,Mystery'),
+   (22,'Sage',51,'2018-04-25',2.99,'Image','Comic','Mystery,Fantasy,Crime'),
+   (23,'Hit-Girl',3,'2018-04-25',3.99,'Image','Comic','Crime,Action,Adventure'),
+   (24,'Ice Cream Man, Vol. 1: Rainbow Sprinkes',NULL,'2018-04-25',16.99,'Image','Trade Paperback','Fantasy,Horror,Adventure'),
+   (25,'Hack/Slash Resurrection',7,'2018-05-30',3.99,'Image','Comic','Fantasy,Mystery'),
+   (26,'Spawn',286,'2018-05-30',2.99,'Image','Comic','Horror,Superhero,Mystery'),
+   (27,'Aliens: Dust To Dust',4,'2018-07-25',3.99,'Dark Horse','Comic','Horror,Action,Adventure,Science-Fiction'),
+   (28,'Blackwood',3,'2018-07-25',3.99,'Dark Horse','Comic','Crime,Fantasy,Horror'),
+   (29,'Tomb Raider: Inferno',2,'2018-07-11',3.99,'Dark Horse','Comic','Action,Adventure,Video Game'),
+   (30,'Sword Daughter',2,'2018-07-24',4.99,'Dark Horse','Comic','Action,Adventure,Fantasy');
+
+/*create comicbookcreators table*/    
+drop table if exists comicbookcreators;
+create table comicbookcreators( 
+    creatorsID smallint(5) UNSIGNED NOT NULL AUTO_increment,
+    creatorsName CHAR(50) NOT NULL Default '',
+    creatorsjob enum('Other','Writer','Artist','Colorist','Penciller','Inker') NULL,
+    comicPublisher enum('Other','DC','Marvel','Image','Dark Horse') NULL,
+    comicBookID  smallint(5) UNSIGNED NULL,
+    PRIMARY KEY(creatorsID)
+    );
+    
+/*alter table with references to the other tables */
+ALTER TABLE comicbookcreators ADD FOREIGN KEY (comicBookID) references comicbooks (comicBookID);
+
+/*insert values into comicbookcreators table*/   
+insert into comicbookcreators values
+   (1,'Dan Jurgens','Writer','DC',1),
+   (NULL,'Ande Parks','Artist','DC',1),
+   (NULL,'Phil Hester','Artist','DC',1),
+   (NULL,'Hope Larson','Writer','DC',2),
+   (NULL,'Jose Marzan Jr.','Artist','DC',2),
+   (NULL,'Minkyu Jung','Artist','DC',2),
+   (NULL,'Tom King','Writer','DC',3),
+   (NULL,'Sandu Florea','Artist','DC',3),
+   (NULL,'Tony S. Daniel','Artist','DC',3),
+   (NULL,'Tony Patrick','Writer','DC',4),
+   (NULL,'Scott Snder','Writer','DC',4),
+   (NULL,'Declan Shalvey','Artist','DC',4),
+   (NULL,'Cully Hamner','Artist','DC',4),
+   (NULL,'Klaus Janson','Artist','DC',4),
+   (NULL,'Minkyu Jung','Artist','DC',4),
+   (NULL,'Dan Jurgens','Writer','DC',5),
+   (NULL,'Patrick Gleason','Writer','DC',5),
+   (NULL,'Peter J. Tomasi','Writer','DC',5),
+   (NULL,'Patrick Gleason','Artist','DC',5),
+   (NULL,'Jaime Mendoza','Artist','DC',5),
+   (NULL,'Art Thibert','Artist','DC',5),
+   (NULL,'Patrick Zircher','Artist','DC',5),
+   (NULL,'Doug Mahnke','Artist','DC',5),
+   (NULL,'Stephen Segovia','Artist','DC',5),
+   (NULL,'Jimmy Palmiotti','Writer','DC',6),
+   (NULL,'Amanda Conner','Writer','DC',6),
+   (NULL,'Mirka Andolfo','Artist','DC',6),
+   (NULL,'John Timms','Artist','DC',6),
+   (NULL,'Bret Blevins','Artist','DC',6),
+   (NULL,'Michael Wm. Kalutat','Artist','DC',6),
+   (NULL,'Marv Wolfman','Writer','DC',7),
+   (NULL,'Pop Mhan','Artist','DC',7),
+   (NULL,'Ivan Cohen','Writer','DC',8),
+   (NULL,'Horacio Ottolini','Artist','DC',8),   
+   (NULL,'Walter Carzon','Artist','DC',8),
+   (NULL,'Tim Seeley','Writer','DC',9),
+   (NULL,'Davide Fabbri','Artist','DC',9),      
+   (NULL,'Rob Williams','Writer','DC',10),
+   (NULL,'Gus Vazquez','Artist','DC',10),   
+   (NULL,'Agustin Padilla','Artist','DC',10),
+   (NULL,'Devin Grayson','Writer','Marvel',11),
+   (NULL,'Marco Failla ','Penciller','Marvel',11),    
+   (NULL,'Saladin Ahmed','Writer','Marvel',12),
+   (NULL,'Javier Rodriguez','Penciller','Marvel',12),   
+   (NULL,'Alvaro Lopez','Inker','Marvel',12),   
+   (NULL,"Chris O'halloran",'Colorist','Marvel',12),
+   (NULL,'Jody Houser','Writer','Marvel',13),
+   (NULL,'Nathan Stockman','Inker','Marvel',13),    
+   (NULL,'Ruth Redmond','Colorist','Marvel',13),
+   (NULL,'Nathan Stockman','Penciller','Marvel',13),
+   (NULL,'Tom Taylor','Writer','Marvel',14),
+   (NULL,'Ramon Rosanas','Inker','Marvel',14),    
+   (NULL,'Nolan Woodard','Colorist','Marvel',14),
+   (NULL,'Ramon Rosanas','Penciller','Marvel',14), 
+   (NULL,'Brandon Montclare','Writer','Marvel',15),
+   (NULL,'Natacha Bustos','Inker','Marvel',15),    
+   (NULL,'Tamra Bonvillain','Colorist','Marvel',15),
+   (NULL,'Natacha Bustos','Penciller','Marvel',15),
+   (NULL,'Charles Soule','Writer','Marvel',16),
+   (NULL,'Mike Henderson','Inker','Marvel',16),    
+   (NULL,'Matt Milla','Colorist','Marvel',16),
+   (NULL,'Mike Henderson','Penciller','Marvel',16),
+   (NULL,'Dan Slott','Writer','Marvel',17),
+   (NULL,'Wade Von Grawbadger','Inker','Marvel',17),    
+   (NULL,'Marte Gracia','Colorist','Marvel',17),
+   (NULL,'Stuart Immonen','Penciller','Marvel',17),   
+   (NULL,'Charles Soule','Writer','Marvel',18),
+   (NULL,'Angel Unzueta','Inker','Marvel',18),    
+   (NULL,'Arif Prianto','Colorist','Marvel',18),
+   (NULL,'Angel Unzueta','Penciller','Marvel',18),   
+   (NULL,'Joe Caramagna','Writer','Marvel',19),
+   (NULL,'Ron Lim','Artist','Marvel',19),    
+   (NULL,'Jason Latour','Writer','Marvel',20),
+   (NULL,'Robbi Rodriguez','Penciller','Marvel',20),     
+   (NULL,'Ed Brubaker','Writer','Image',21),
+   (NULL,'Sean Phillips','Artist','Image',21),
+   (NULL,'Elizabeth Breitweiser','Artist','Image',21), 
+   (NULL,'Brian K. Vaughan','Writer','Image',22),
+   (NULL,'Fiona Staples','Artist','Image',22),
+   (NULL,'Mark Millar','Writer','Image',23),
+   (NULL,'Ricardo Lopez Ortiz','Artist','Image',23),   
+   (NULL,'W. Maxwell Prince','Writer','Image',24),
+   (NULL,'Martin Morazzo','Artist','Image',24), 
+   (NULL,'Tini Howard','Writer','Image',25),
+   (NULL,'Michael Russell','Artist','Image',25),    
+   (NULL,'Todd McFarlane','Writer','Dark Horse',26),
+   (NULL,'Jason Shawn Alexander','Artist','Dark Horse',26),    
+   (NULL,'Gabriel Hardman','Writer','Dark Horse',27),
+   (NULL,'Gabriel Hardman','Artist','Dark Horse',27),
+   (NULL,'Rain Beredo','Colorist','Dark Horse',27),
+   (NULL,'Evan Dorkin','Writer','Dark Horse',28),
+   (NULL,'Veronica Fish','Artist','Dark Horse',28),   
+   (NULL,'Jackson Lanzing','Writer','Dark Horse',29),
+   (NULL,'Collin Kelly','Writer','Dark Horse',29),
+   (NULL,'Phillip Sevy','Artist','Dark Horse',29),
+   (NULL,'Michael Atiyeh','Colorist','Dark Horse',29), 
+   (NULL,'Brian Wood','Writer','Dark Horse',30),
+   (NULL,'Mack Chater','Artist','Dark Horse',30),
+   (NULL,'Jose Villarubia','Colorist','Dark Horse',30);  
+   
+/*create comicbooksellers table*/   
+drop table if exists comicbooksellers;
+create table comicbooksellers( 
+    sellersID smallint(5) UNSIGNED NOT NULL AUTO_increment,
+    sellersName CHAR(30) NOT NULL Default '',
+    sellersType enum('Other','Local','Online','OutState') NULL,
+    sellersAddress VARCHAR(50) NULL,
+    sellersCity  CHAR(20) NULL,
+    sellersState  CHAR(2) NULL,
+    sellersZipCode int(5) UNSIGNED NULL,
+    sellersInventory int(3) UNSIGNED NULL,
+    comicBookID  smallint(5) UNSIGNED NULL,
+    storeOwnID smallint(5) UNSIGNED NULL,
+    PRIMARY KEY(sellersID)
+    );
+    
+ /*alter table with references to the other tables */
+ALTER TABLE comicbooksellers ADD FOREIGN KEY (comicBookID) references comicbooks (comicBookID);
+    
+/*insert values into comicbooksellers table*/       
+insert into comicbooksellers values
+   (1,'Dark Tide Comics','Local','1601 S Hwy 77','Kingsville','TX',78363,NULL,NULL,1),
+   (2,'Texas Toyz','Local','5425 Spid. Suite 126','Corpus Christi','TX',78411,NULL,NULL,2),
+   (3,'Collectors Planet','Local','Mcardie Rd.','Corpus Christi','TX',78412,NULL,NULL,3),
+   (4,'Comics Unlimited','Local','623 N 77 Sunshine Strip','Harlingen','TX',78363,NULL,NULL,4),
+   (5,'Comixology','Online',NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+   (6,'My Comic Shop','Online',NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+   (7,'Midtown Comics','Online',NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+   (8,'ForbiddenPlanet','Online',NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+   (NULL,'Dark Tide Comics','Local','1601 S Hwy 77','Kingsville','TX',78363,28,32,1),
+   (NULL,'Texas Toyz','Local','5425 Spid. Suite 126','Corpus Christi','TX',78411,50,23,2),
+   (NULL,'Collectors Planet','Local','Mcardie Rd.','Corpus Christi','TX',78412,21,3,3),
+   (NULL,'Comics Unlimited','Local','623 N 77 Sunshine Strip','Harlingen','TX',78363,56,8,4),
+   (NULL,'Comixology','Online',NULL,NULL,NULL,NULL,89,11,NULL),
+   (NULL,'My Comic Shop','Online',NULL,NULL,NULL,NULL,50,6,NULL),
+   (NULL,'Midtown Comics','Online',NULL,NULL,NULL,NULL,23,26,NULL),
+   (NULL,'ForbiddenPlanet','Online',NULL,NULL,NULL,NULL,55,4,NULL),
+   (NULL,'Dark Tide Comics','Local','1601 S Hwy 77','Kingsville','TX',78363,46,18,1),
+   (NULL,'Texas Toyz','Local','5425 Spid. Suite 126','Corpus Christi','TX',78411,29,5,2),
+   (NULL,'Collectors Planet','Local','Mcardie Rd.','Corpus Christi','TX',78412,51,5,3),
+   (NULL,'Comics Unlimited','Local','623 N 77 Sunshine Strip','Harlingen','TX',78363,97,18,4),
+   (NULL,'Comixology','Online',NULL,NULL,NULL,NULL,46,12,NULL),
+   (NULL,'My Comic Shop','Online',NULL,NULL,NULL,NULL,22,23,NULL),
+   (NULL,'Midtown Comics','Online',NULL,NULL,NULL,NULL,21,29,NULL),
+   (NULL,'ForbiddenPlanet','Online',NULL,NULL,NULL,NULL,48,23,NULL),
+   (NULL,'Dark Tide Comics','Local','1601 S Hwy 77','Kingsville','TX',78363,64,9,1),
+   (NULL,'Texas Toyz','Local','5425 Spid. Suite 126','Corpus Christi','TX',78411,74,19,2),
+   (NULL,'Collectors Planet','Local','Mcardie Rd.','Corpus Christi','TX',78412,57,11,3),
+   (NULL,'Comics Unlimited','Local','623 N 77 Sunshine Strip','Harlingen','TX',78363,83,1,4),
+   (NULL,'Comixology','Online',NULL,NULL,NULL,NULL,92,23,NULL),
+   (NULL,'My Comic Shop','Online',NULL,NULL,NULL,NULL,30,2,NULL),
+   (NULL,'Midtown Comics','Online',NULL,NULL,NULL,NULL,87,4,NULL),
+   (NULL,'ForbiddenPlanet','Online',NULL,NULL,NULL,NULL,64,21,NULL),
+   (NULL,'Dark Tide Comics','Local','1601 S Hwy 77','Kingsville','TX',78363,58,3,1),
+   (NULL,'Texas Toyz','Local','5425 Spid. Suite 126','Corpus Christi','TX',78411,73,14,2),
+   (NULL,'Collectors Planet','Local','Mcardie Rd.','Corpus Christi','TX',78412,50,17,3),
+   (NULL,'Comics Unlimited','Local','623 N 77 Sunshine Strip','Harlingen','TX',78363,54,28,4),
+   (NULL,'Comixology','Online',NULL,NULL,NULL,NULL,59,3,NULL),
+   (NULL,'My Comic Shop','Online',NULL,NULL,NULL,NULL,70,21,NULL),
+   (NULL,'Midtown Comics','Online',NULL,NULL,NULL,NULL,58,4,NULL),
+   (NULL,'ForbiddenPlanet','Online',NULL,NULL,NULL,NULL,43,19,NULL),
+   (NULL,'Dark Tide Comics','Local','1601 S Hwy 77','Kingsville','TX',78363,88,14,1),
+   (NULL,'Texas Toyz','Local','5425 Spid. Suite 126','Corpus Christi','TX',78411,63,30,2),
+   (NULL,'Collectors Planet','Local','Mcardie Rd.','Corpus Christi','TX',78412,42,26,3),
+   (NULL,'Comics Unlimited','Local','623 N 77 Sunshine Strip','Harlingen','TX',78363,38,22,4),
+   (NULL,'Comixology','Online',NULL,NULL,NULL,NULL,76,25,NULL),
+   (NULL,'My Comic Shop','Online',NULL,NULL,NULL,NULL,90,13,NULL),
+   (NULL,'Midtown Comics','Online',NULL,NULL,NULL,NULL,41,20,NULL),
+   (NULL,'ForbiddenPlanet','Online',NULL,NULL,NULL,NULL,42,24,NULL); 
+   
+/*create storeshedule table*/      
+drop table if exists storeschedule;
+create table storeschedule(
+   storeScheduleID smallint(5) UNSIGNED NOT NULL AUTO_increment,
+   storeDay CHAR(3) NOT NULL Default '',
+   storeOpen TIME NULL,
+   storeClose TIME NULL,
+   storeOwnID smallint(5) UNSIGNED NULL,
+   PRIMARY KEY (storeScheduleID)
+   );
+   
+/*inesrt values into storeschedule table*/      
+insert into storeschedule values
+   (1,'Mon','10:00:00','08:30:00',1),
+   (NULL,'Tue','10:45:00','08:30:00',1),
+   (NULL,'Wed','10:45:00','09:45:00',1),
+   (NULL,'Thr','10:30:00','09:15:00',1),
+   (NULL,'Fri','10:30:00','10:30:00',1),
+   (NULL,'Mon','02:30:00','10:30:00',2),
+   (NULL,'Tue','03:00:00','09:30:00',2),
+   (NULL,'Wed','02:00:00','10:30:00',2),
+   (NULL,'Thu','03:00:00','10:30:00',2),
+   (NULL,'Fri','03:30:00','09:30:00',2),
+   (NULL,'Mon','09:45:00','08:20:00',3),
+   (NULL,'Tue','09:30:00','08:15:00',3),
+   (NULL,'Wed','09:30:00','09:00:00',3),
+   (NULL,'Thu','09:45:00','10:45:00',3),
+   (NULL,'Fri','09:15:00','09:45:00',3),
+   (NULL,'Mon','07:45:00','06:30:00',4),
+   (NULL,'Tue','07:00:00','06:45:00',4),
+   (NULL,'Wed','07:30:00','07:00:00',4),
+   (NULL,'Thu','07:45:00','06:30:00',4),
+   (NULL,'Fri','07:30:00','06:45:00',4);
+   
+/*create comicbook preorder table  */  
+drop table if exists preorder;
+create table preorder(
+    orderID    smallint(5) UNSIGNED NOT NULL AUTO_increment,
+    orderName    CHAR(30) NOT NULL Default '',
+    orderDate  DATE NULL,
+    comicBookID smallint(5) UNSIGNED NULL,
+    sellersID smallint(5) UNSIGNED NULL,
+    PRIMARY KEY     (orderID)
+    );
+
+ /*alter table with references to the other tables */
+ALTER TABLE preorder ADD FOREIGN KEY (comicBookID) references comicbooks (comicBookID);  
+ 
+/*insert values into preorder table  */  
+insert preorder values
+   (1,'Jack Brown','2018-04-25',30,1),
+   (NULL,'Mike Grey','2018-05-15',29,2),
+   (NULL,'Micheal Wood','2018-05-02',4,3),
+   (NULL,'Galm Williams','2018-04-18',5,6),
+   (NULL,'Sarah Mayfield','2018-05-01',17,4),
+   (NULL,'Becky Barkley','2018-04-25',16,5),
+   (NULL,'John Carter','2018-05-01',17,8),
+   (NULL,'Rebecca Peace','2018-04-25',25,7);
+
+/*combined two tables using join*/
+#select comicbooks.comicName as 'Comic Book', comicbookcreators.creatorsName as 'Work On', comicbookcreators.creatorsjob as 'Job'
+#from comicbooks join comicbookcreators on comicbooks.comicBookID = comicbookcreators.comicBookID 
+#where comicbookcreators.comicBookID between 10 and 12;
+ 
+/*combined three tables using join*/
+#select DISTINCT preorder.orderName as 'Perorder', comicbooks.comicName as 'Comic Book', comicbooks.comicIssue as 'Issue', 
+#comicbooksellers.sellersName as 'Store' from preorder join comicbooks 
+#on comicbooks.comicBookID = preorder.comicBookID join comicbooksellers on 
+#preorder.sellersID = comicbooksellers.sellersID where comicbooks.comicPublisher = 'Marvel';
+
+/*Using order by and in descending order*/
+#select comicName as 'Comic Book', comicIssue as 'Issue', comicPrice as 'Price' 
+#from comicbooks where comicpublisher = 'Image' order by comicPrice DESC, comicName;
+
+/*select comicbook publisher and count every instance from comicbooks table and group them and order them descending order*/
+#select comicpublisher as 'Publisher', COUNT(*) AS count from comicbooks group by comicpublisher order by count DESC;
+
+/*select comicbook publisher and count every intance and get max price and 
+min price from comicbooks table, group them by publisher and having them 
+greater then count > 3 and order them by in descending order*/
+#select comicpublisher as 'Comic Publisher', COUNT(*) as 'Count', MAX(comicPrice) as 'Highest Price', MIN(comicPrice) as 'Lowest Price' 
+#from comicbooks group by comicpublisher having Count < 10 order by count DESC;
+
+/*Delimiter, Create Procedure with the roll up*/
+delimiter //
+create procedure maxprice()
+BEGIN
+select comicpublisher as 'Publisher', MAX(comicPrice) as 'Max Price', MIN(comicPrice) as 'Min Price' from comicbooks group by comicpublisher with rollup;
+END//
+delimiter ;
+
+/*Call Procedure*/
+#call maxprice();
+
+/*Using between*/
+#select comicName as 'Comic Name', comicIssue as 'Comic Issue', comicSale as 'Release Date' from comicbooks where comicSale between '18-05-01' and '18-05-30';
+
+/*update table comicbooks by setting the price of one comic book title Tomb Raider*/
+#select comicName as 'Comic Book', comicIssue as 'Issue', comicPrice as 'Price', comicpublisher as 'Publisher' from comicbooks where comicName LIKE 'Tomb R%';
+#update comicbooks set comicPrice = comicPrice - 1.00 where comicName LIKE 'Tomb R%';
+#select comicName as 'Comic Book', comicIssue as 'Issue', comicPrice as 'Price', comicpublisher as 'Publisher' from comicbooks where comicName LIKE 'Tomb R%';
+
+/*Create view that gets the writers of Dark Horse*/
+#create view writersDH as
+#select DISTINCT comicbooksellers.sellersName as 'Comic Book Sellers', comicbooks.comicName as 'Comic Book', 
+#comicbooks.comicIssue as 'Issue', comicbookcreators.creatorsName as 'Writers' from comicbooksellers join comicbooks on comicbooksellers.comicBookID = comicbooks.comicBookID
+#join comicbookcreators on comicbookcreators.comicBookID = comicbooksellers.comicBookID where comicbooks.comicpublisher = 'Dark Horse' and
+#comicbookcreators.creatorsjob = 'Writer' order by sellersName DESC, comicIssue;
+
+/*Selects the view writersDH*/
+#select * from writersDH;
+
+/*Creats the view tschedule*/
+#create view tschedule as
+#select DISTINCT comicbooksellers.sellersName as 'Comic Book Sellers' , comicbooksellers.sellersAddress as 'Street Address',
+#comicbooksellers.sellersCity as 'City',comicbooksellers.sellersType as 'Type', storeschedule.storeDay as 'Day Open',
+#storeschedule.storeOpen as 'Open', storeschedule.storeClose as 'Close' from comicbooksellers join storeschedule on
+#comicbooksellers.storeOwnID = storeschedule.storeOwnID where storeschedule.storeDay = 'Tue';
+
+/*Selects the view writersDH*/
+#select * from tschedule;
+
+/*Load Local infile*/
+#load data local infile 'more_preorders.csv' into table preorder columns terminated by ',';
+#select preorder.orderName as 'Name', preorder.orderDate as 'Preorder' from preorder;
+
+
+/*Delimiter, Create Procedure predate that calculates the amount of time between preorder and release of comic book*/
+delimiter //
+create procedure predate ()
+BEGIN
+select preorder.orderName as 'Name', to_days(comicbooks.comicSale) - to_days(preorder.orderDate) as 'Preorder Wait' , comicbooks.comicName as 'Comic Book', comicbooks.comicIssue as 'Issue'  
+from preorder join comicbooks on preorder.comicBookID = comicbooks.comicBookID;
+END//
+delimiter ;
+
+#call predate();
+
+/*Gets the inventory and uses the greatest to get the number for inventory*/
+#select comicbooksellers.sellersName as 'Comic Book Sellers',comicbooks.comicName as "Comic Book" , comicbooksellers.sellersInventory
+#as "Inventory" from comicbooksellers join comicbooks
+#on comicbooks.comicBookID = comicbooksellers.comicBookID where comicbooksellers.sellersInventory > FLOOR(RAND()*(100-50+1))+50;
+
+/*Create a transaction*/
+#BEGIN;
+#select comicName as 'Comic Book', comicPrice as 'Price', comicSale as 'Release', comicpublisher as 'Publisher'
+#from comicbooks where comicpublisher = 'Image' order by comicpublisher DESC, comicName;
+#update comicbooks SET comicPrice = comicPrice - 1 where comicpublisher = 'Image' and comicBookID between 21 and 23;
+#update comicbooks SET comicSale = DATE_ADD(comicSale, INTERVAL 7 DAY) where comicpublisher = 'Image' and comicBookID between 24 and 26;
+#COMMIT;
+#select comicName as 'Comic Book', comicPrice as 'Price', comicSale as 'Release', comicpublisher as 'Publisher'
+#from comicbooks where comicpublisher = 'Image' order by comicpublisher DESC, comicName;
+
+/*Create a rollback*/
+#BEGIN;
+#update comicbooks SET comicPrice = comicPrice + 1 where comicpublisher = 'DC' and comicBookID between 1 and 5;
+#update comicbooks SET comicSale = DATE_SUB(comicSale, INTERVAL 7 DAY) where comicpublisher = 'DC' and comicBookID between 6 and 10;
+#select comicName as 'Comic Book', comicPrice as 'Price', comicSale as 'Release', comicpublisher as 'Publisher'
+#from comicbooks where comicpublisher = 'DC' order by comicpublisher DESC, comicName;
+
+#ROLLBACK;
+#select comicName as 'Comic Book', comicPrice as 'Price', comicSale as 'Release', comicpublisher as 'Publisher'
+#from comicbooks where comicpublisher = 'DC' order by comicpublisher DESC, comicName and comicpublisher;
+
+/*Create variables*/
+#SET @porder1 = 'Alex Patt';
+#SET @porder2 = '2018-05-20';
+#SET @porder3 = 15;
+#SET @porder4 = 4;
+
+#insert into preorder values
+#(NULL,@porder1,@porder2,@porder3,@porder4);
+   
+#select preorder.orderName as 'Name', preorder.orderDate as 'Preorder' from preorder;;
+
+/*Get variables to create CONCAT*/
+#SET @cjob1 = (select creatorsName from comicbookcreators where comicBookID = 30 and creatorsjob = 'Writer');
+#SET @cjob2 = (select creatorsjob from comicbookcreators where creatorsjob = 'Writer' and comicBookID = 30);
+#SET @cjob3 = (select comicName from comicbooks where comicBookID = 30);
+#SET @cjob4 = (select comicIssue from comicbooks where comicBookID = 30);
+
+#select @cjob5 := CONCAT(@cjob1, ' ',@cjob2, ' ',@cjob3, ' ',@cjob4, ' ');
+more_preorders.csv
+NULL,Bob Kemp,2018-04-20,23,2
+NULL,Mark Murillo,2018-05-05,18,2
+NULL,Wiilam Bautista,2018-04-29,16,1
+NULL,Justine Garrett,2018-05-01,17,3
+NULL,Ana Morse,2018-04-25,30,4
